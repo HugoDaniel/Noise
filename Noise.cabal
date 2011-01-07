@@ -1,0 +1,43 @@
+name:          Noise
+version:       0.0.1
+maintainer:    Hugo Daniel <hugodaniel@hackological.com>
+cabal-version: >= 1.6
+build-type:    Simple
+category:      Math
+synopsis:      A Haskell coherent noise generator
+description:   A Haskell coherent noise generator roughly based on libnoise.
+               Currently it can generate perlin noise and combine noise generators.
+               For more information on libnoise, please check: <http://libnoise.sourceforge.net>.
+license:       BSD3
+license-file:  LICENSE
+
+extra-source-files:
+  README.txt
+  Math/Noise/common.h
+  Math/Noise/noisegen.h
+  Math/Noise/vectortable.h
+  Math/Noise/Modules/perlin.h
+
+library
+  build-depends:
+    base >= 4, vector, array, data-default
+
+  exposed-modules:
+    Math.Noise
+    Math.Noise.NoiseGen
+    Math.Noise.NoiseModule
+    Math.Noise.Modules.Perlin
+  other-modules:
+    Math.Noise.Interpolation
+    Math.Noise.VectorTable
+
+  ghc-options: -O2 -funfolding-use-threshold=16 -fexcess-precision -funbox-strict-fields -fvia-C -optc-O3 
+  extensions: BangPatterns 
+  include-dirs:
+    Math/Noise
+    Math/Noise/Modules
+
+  c-sources:
+    Math/Noise/noisegen.c
+    Math/Noise/Modules/perlin.c
+    
