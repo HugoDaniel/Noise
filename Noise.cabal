@@ -1,5 +1,5 @@
 Name:          Noise
-Version:       1.0.4
+Version:       1.0.5
 Category:      Math, Graphics, Noise
 Synopsis:      A Haskell coherent noise generator based on libnoise
 Description:   
@@ -34,6 +34,9 @@ Extra-source-files:
   Math/Noise/common.h
   Math/Noise/noisegen.h
   Math/Noise/Modules/perlin.h
+source-repository head                                                             
+  type:     git                                                                    
+  location: git://github.com/HugoDaniel/Noise.git
 
 library
   build-depends:
