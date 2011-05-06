@@ -1,37 +1,58 @@
-name:          Noise
-version:       0.0.1
-maintainer:    Hugo Daniel <hugodaniel@hackological.com>
-cabal-version: >= 1.6
-build-type:    Simple
-category:      Math
-synopsis:      A Haskell coherent noise generator
-description:   A Haskell coherent noise generator roughly based on libnoise.
-               Currently it can generate perlin noise and combine noise generators.
-               For more information on libnoise, please check: <http://libnoise.sourceforge.net>.
-license:       BSD3
-license-file:  LICENSE
-
-extra-source-files:
+Name:          Noise
+Version:       1.0.4
+Category:      Math, Graphics, Noise
+Synopsis:      A Haskell coherent noise generator based on libnoise
+Description:   
+  .
+  A Haskell coherent noise generator roughly based on libnoise.
+  For more information on libnoise, please check: <http://libnoise.sourceforge.net>
+  The noise modules were extensively profiled and benchmarked,
+  the slower pure functions were rewritten in C.
+  The main objective of this packer is to provide a simple interface 
+  to compose noise modules.
+  .
+  > 
+  > perlinWithScale = perlin `isSourceOf` scalebias 
+  >
+  .
+  This is a 3D noise package, to get a value you need to specify a
+  triple:
+  .
+  > getValue myComposition (-0.1, -0.5, 0.76)
+  .
+  For more information please read the documentation of each module 
+  bellow.
+Build-type:    Simple
+Maintainer:    Hugo Gomes <mr.hugo.gomes@gmail.com>
+Author:        Hugo Gomes <mr.hugo.gomes@gmail.com>
+Copyright:     Hugo Gomes
+Cabal-version: >= 1.6
+License:       BSD3
+License-file:  LICENSE
+Extra-source-files:
   README.txt
   Math/Noise/common.h
   Math/Noise/noisegen.h
-  Math/Noise/vectortable.h
   Math/Noise/Modules/perlin.h
 
 library
   build-depends:
-    base >= 4, vector, array, data-default
+    base < 5, vector, array, data-default
 
   exposed-modules:
     Math.Noise
     Math.Noise.NoiseGen
     Math.Noise.NoiseModule
+    Math.Noise.Modules.Abs
+    Math.Noise.Modules.Billow
     Math.Noise.Modules.Perlin
+    Math.Noise.Modules.Select
+    Math.Noise.Modules.ScaleBias
   other-modules:
     Math.Noise.Interpolation
     Math.Noise.VectorTable
 
-  ghc-options: -O2 -funfolding-use-threshold=16 -fexcess-precision -funbox-strict-fields -fvia-C -optc-O3 
+  ghc-options: -O2 -funbox-strict-fields
   extensions: BangPatterns 
   include-dirs:
     Math/Noise

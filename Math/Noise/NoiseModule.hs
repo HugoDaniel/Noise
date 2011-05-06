@@ -15,8 +15,8 @@ class NoiseClass n where
   sanitize = id 
 
 data NoiseModule = forall n. (NoiseClass n) => NoiseModule { noiseFunc :: n
-					                   , sources :: [NoiseModule]
-					                   }
+					                                       , sources :: [NoiseModule]
+					                                       }
 
 instance NoiseClass NoiseModule where
   getNoiseValue (NoiseModule n srcs ) src2 (x, y, z) = getNoiseValue n (src2 ++ srcs) (x, y, z)
@@ -39,12 +39,6 @@ zero = NoiseModule { noiseFunc = ZeroNoise , sources = [] }
 one :: NoiseModule
 one = NoiseModule { noiseFunc = OneNoise, sources = [] }
 
--- | creates a NoiseModule from a 1D function, the created module does not require sources 
-{-
-generator1D :: (Double->Double) -> NoiseModule
-generator1D f = 
--}
-
 isSourceOf :: (NoiseClass a, NoiseClass b) => a -> b -> NoiseModule 
 isSourceOf s1 n = NoiseModule { noiseFunc = n, sources = [gen s1] } 
 
@@ -58,4 +52,11 @@ areSourcesOf mod n = setSrcs . gen $ n
     fetchSrcs :: NoiseModule -> [NoiseModule] -> [NoiseModule]
     fetchSrcs (NoiseModule nfunc [s1, s2] ) accum = fetchSrcs s1 (gen s2 : accum)
     fetchSrcs (NoiseModule nfunc []) accum = (gen nfunc) : accum
+
+-- | creates a NoiseModule from a 1D function, the created module does not require sources 
+{-
+generator1D :: (Double->Double) -> NoiseModule
+generator1D f = 
+-}
+
 

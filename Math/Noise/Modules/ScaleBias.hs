@@ -1,5 +1,5 @@
-module Noise.Modules.ScaleBias where
-import Noise.NoiseModule
+module Math.Noise.Modules.ScaleBias where
+import Math.Noise.NoiseModule
 import Control.Applicative
 
 data ScaleBias = ScaleBias { bias

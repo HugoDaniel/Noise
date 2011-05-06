@@ -1,5 +1,5 @@
-module Noise.Modules.Abs where
-import Noise.NoiseModule
+module Math.Noise.Modules.Abs where
+import Math.Noise.NoiseModule
 import Control.Applicative
 
 data Absolute = Absolute

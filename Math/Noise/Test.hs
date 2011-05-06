@@ -11,7 +11,10 @@ test = getValue myNoise (-0.1, -0.5, 0.76)
 myNoise2 = perlin { perlinFrequency = 0.123 } `isSourceOf` scalebias { scale = 10.0 } `isSourceOf` absolute 
 myNoise = perlin `isSourceOf` scalebias { scale = 1.0 } `isSourceOf` absolute 
 
-tNoise = perlin { perlinFrequency = 0.123 } `andModule` billow { billowOctaves = 12 } `andModule` myNoise `areSourcesOf` select { upperBound = 0.7, lowerBound = 0.2 }
+tNoise = perlin { perlinFrequency = 0.123 } `andModule` 
+         billow { billowOctaves = 12 } `andModule` 
+         myNoise `areSourcesOf` 
+         select { upperBound = 0.7, lowerBound = 0.2 }
 
 {-
 n1 `isSourceOf` n2 `isSourceOf` select `with` 

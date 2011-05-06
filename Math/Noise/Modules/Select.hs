@@ -1,15 +1,15 @@
-module Noise.Modules.Select where
-import Noise.NoiseGen
-import Noise.NoiseModule
-import Noise.Interpolation
-import Maybe
+module Math.Noise.Modules.Select where
+import Math.Noise.NoiseGen
+import Math.Noise.NoiseModule
+import Math.Noise.Interpolation
+import Data.Maybe
 import Control.Applicative
 
 data Select = Select { edgeFallOff 
-		     , lowerBound 
-		     , upperBound :: Double
-		     , controller :: NoiseModule
-		     }
+		             , lowerBound 
+		             , upperBound :: Double
+		             , controller :: NoiseModule
+		             }
 
 select = Select { edgeFallOff = 0.0, lowerBound = -1.0, upperBound = 1.0, controller = one }
 -- | Adjusts select values so that they are correct (i.e. lowerBound < upperBound, etcc...)
