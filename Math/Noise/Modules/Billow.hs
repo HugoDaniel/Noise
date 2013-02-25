@@ -5,13 +5,6 @@ import Math.Noise.NoiseModule
 import Foreign
 import Foreign.C.Types
 
-foreign import ccall "billow.h billowGen"
-  c_billow :: CDouble -> CDouble -> CDouble 
-           -> CDouble -> CDouble -> CInt 
-           -> CDouble -> CInt 
-           -> CDouble
-
-
 data Billow = Billow { billowFrequency
                      , billowLacunarity
                      , billowPersistence :: Double

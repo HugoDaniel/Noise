@@ -1,5 +1,5 @@
 Name:          Noise
-Version:       1.0.5
+Version:       1.0.6
 Category:      Math, Graphics, Noise
 Synopsis:      A Haskell coherent noise generator based on libnoise
 Description:   
@@ -22,6 +22,8 @@ Description:
   .
   For more information please read the documentation of each module 
   bellow.
+  .
+  Special thanks to Csaba Hruska for the patches and testing
 Build-type:    Simple
 Maintainer:    Hugo Gomes <mr.hugo.gomes@gmail.com>
 Author:        Hugo Gomes <mr.hugo.gomes@gmail.com>
@@ -62,6 +64,6 @@ library
     Math/Noise/Modules
 
   c-sources:
-    Math/Noise/noisegen.c
-    Math/Noise/Modules/perlin.c
+    Math/Noise/noisegenc.c
+    Math/Noise/Modules/perlinc.c
     
