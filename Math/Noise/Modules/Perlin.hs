@@ -6,12 +6,12 @@ import Math.Noise.NoiseModule
 import Data.Bits
 import Foreign
 import Foreign.C.Types
--- import qualified Data.Vector.Unboxed as V
+import Data.Word
 
 foreign import ccall "perlin.h perlinGen"
   c_perlin :: CDouble -> CDouble -> CDouble 
-           -> CDouble -> CDouble -> CInt 
-           -> CDouble -> CInt 
+           -> CDouble -> CDouble -> CUInt 
+           -> CDouble -> CUInt 
            -> CDouble
 
 
@@ -19,11 +19,11 @@ data Perlin = Perlin { perlinFrequency :: Double
                      -- ^ Frequency of the first octave
 		             , perlinLacunarity :: Double 
                      -- ^ Frequency multiplier between successive octaves
-		             , perlinOctaves :: Int 
+		             , perlinOctaves :: Word32
                      -- ^ Total number of octaves that generate the Perlin noise
 		             , perlinPersistence :: Double 
                      -- ^ Persistence of the Perlin noise
-		             , perlinSeed :: Int
+		             , perlinSeed :: Word32
  		             } deriving (Show, Eq)
 
 perlin :: Perlin 
@@ -42,10 +42,11 @@ instance NoiseClass Perlin where
 		   	            , perlinOctaves = octaveCount
 		   	            , perlinPersistence = p
 		   	            , perlinSeed = seed } ) _ (x,y,z) = 
-    Just $ realToFrac $ c_perlin (realToFrac x) (realToFrac y) (realToFrac z) 
-                                 (realToFrac freq) (realToFrac lac) 
-                                 (fromIntegral octaveCount) (realToFrac p) 
-                                 (fromIntegral seed)
+    Just . toDouble $ c_perlin (CDouble x) (CDouble y) (CDouble z) 
+                               (CDouble freq) (CDouble lac) 
+                               (CUInt octaveCount) (CDouble p) 
+                               (CUInt seed)
+        where toDouble (CDouble d) = d
 
 {-
     Just $ value $ V.foldr' octaveFunc (0.0, 1.0, x*freq, y*freq, z*freq) (V.generate (octaveCount-1) id)

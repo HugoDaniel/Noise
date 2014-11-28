@@ -5,6 +5,14 @@ import Math.Noise.NoiseModule
 import Foreign
 import Foreign.C.Types
 
+foreign import ccall "billow.h billowGen"
+  c_billow :: CDouble -> CDouble -> CDouble 
+           -> CDouble -> CDouble -> CUInt 
+           -> CDouble -> CUInt 
+           -> CDouble
+
+-- | Billow noise value is just a special case of perlin noise, it shares
+-- all of its input
 data Billow = Billow { billowFrequency
                      , billowLacunarity
                      , billowPersistence :: Double
@@ -13,14 +21,15 @@ data Billow = Billow { billowFrequency
                      , billowMaxOctave :: Int
                      }
 
+-- | Billow data type with default values
 billow :: Billow
 billow = Billow { billowFrequency = 1.0
-		, billowLacunarity = 2.0
-		, billowPersistence = 0.5
-		, billowOctaves = 6
-		, billowSeed = 125
+                , billowLacunarity = 2.0
+                , billowPersistence = 0.5
+                , billowOctaves = 6
+                , billowSeed = 125
                 , billowMaxOctave = 30
-		}
+                }
 
 instance NoiseClass Billow where
   getNoiseValue (Billow { billowFrequency = freq 
@@ -30,19 +39,9 @@ instance NoiseClass Billow where
                         , billowSeed = seed
                         , billowMaxOctave = maxoctv
                         } ) _ (x,y,z) =
-    Just . (+) 0.5 . value $ 
-      foldr octaveFunc (0.0, 1.0, ix, iy, iz) [0..octaveCount]
-    where ix = x * freq
-          iy = y * freq
-          iz = z * freq
-          fromDouble = fromInteger . floor
-          value (v,_,_,_,_) = v
-          signal sx sy sz octv = 2.0 * (abs $ gradientCoherentNoise3D sx sy sz (octaveSeed octv)) - 1.0
-          octaveSeed octv = seed + octv
-          octaveFunc curOctave (value, curPersistence, ox, oy, oz) =
-                ( value + ( (signal ox oy oz curOctave) * curPersistence)
-                , curPersistence * pers
-                , ox * lac
-                , oy * lac
-                , oz * lac
-                )
+    Just . toDouble $ c_billow (realToFrac x) (realToFrac y) (realToFrac z) 
+                               (realToFrac freq) (realToFrac lac) 
+                               (fromIntegral octaveCount) (realToFrac pers) 
+                               (fromIntegral seed)
+        where toDouble (CDouble d) = d
+
